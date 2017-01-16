@@ -88,3 +88,5 @@ ENV/
 # Rope project settings
 .ropeproject
 .idea/
+/teambuilder/db.sqlite3
+/teambuilder/web/migrations/*_initial.py
