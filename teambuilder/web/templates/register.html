@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block main %}
+    {% for error in errors %}
+        {{ error }}<br/>
+    {% endfor %}
+    {#  TODO: Add JS Checks  #}
+    <form method="post">
+        {% csrf_token %}
+        <input type="number" name="student_id" required maxlength="9" minlength="9" min="201451001" max="201652090" placeholder="Student ID">
+        <input type="text" name="firstname" required placeholder="First Name">
+        <input type="text" name="lastname" required placeholder="Last Name">
+        <input type="email" name="email" required placeholder="E-Mail Address">
+        <input type="password" name="password" required minlength="8" placeholder="Password">
+        <input type="password" name="password_repeat" minlength="8" placeholder="Password Again">
+        <input type="tel" name="mobile" minlength="10" maxlength="10" placeholder="Mobile Number">
+        <input type="submit" name="register" value="Register Now">
+    </form>
+{% endblock %}
