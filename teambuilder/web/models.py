@@ -1,13 +1,13 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 
 class Participant(models.Model):
 
-    student_id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=1024, default='', blank=False,
-                            null=False)
-    join_time = models.DateTimeField(default=timezone.now)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE)
+    mobile = models.CharField(max_length=10, unique=True)
 
 
 class Skill(models.Model):
@@ -40,3 +40,9 @@ class TeamJoinRequest(models.Model):
     team = models.ForeignKey(Team)
     member = models.ForeignKey(Participant)
     request_time = models.DateTimeField(default=timezone.now)
+
+
+class Payment(models.Model):
+
+    user = models.ForeignKey(Participant)
+    status = models.BooleanField(default=False)
