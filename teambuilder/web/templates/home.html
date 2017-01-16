@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block main %}
-    {% if participant %}
-        Hello {{ participant.name }}
+    {% if user %}
+        Hello {{ user.user.first_name }} {{ user.user.last_name }}
     {% else %}
         <a href="/participant/login">Login</a> | <a href="/participant/register">Register</a>
     {% endif %}

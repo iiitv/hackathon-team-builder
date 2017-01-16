@@ -8,6 +8,8 @@ from . import utils
 
 def home(request):
     user = utils.get_login_user(request.COOKIES)
+    if user is None:
+        return redirect('/participant/login')
     return render(request, 'home.html', context={
         'title': 'Welcome to Hackathon 2017',
         'user': user,
@@ -61,4 +63,28 @@ def register(request):
         'title': 'Register for Hackathon 2017',
         'errors': error,
         'user': None,
+    })
+
+
+def login(request):
+    # TODO: Add better checks
+    user = utils.get_login_user(request.COOKIES)
+    if user:
+        return redirect('/')
+    error = []
+    if request.POST.get('login', None):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        login_users = User.objects.filter(username=username)
+        if len(login_users) > 0:
+            login_user = login_users[0]
+            if login_user.check_password(password):
+                response = redirect('/')
+                response.set_cookie(key='username', value=login_user.username)
+                return response
+        error.append('No such user found')
+    return render(request, 'login.html', context={
+        'title': 'Login',
+        'user': None,
+        'errors': error
     })

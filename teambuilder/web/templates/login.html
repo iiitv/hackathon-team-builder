@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block main %}
+    {% for error in errors %}
+        {{ error }}<br/>
+    {% endfor %}
+    <form method="post">
+    {# TODO: Add JS Checks #}
+        {% csrf_token %}
+        <input type="text" name="username" maxlength="9" minlength="9" placeholder="Student ID">
+        <input type="password" name="password" minlength="8" placeholder="Password">
+        <input type="submit" name="login" value="Log In">
+    </form>
+{% endblock %}
