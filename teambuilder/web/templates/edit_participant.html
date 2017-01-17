@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block main %}
+    {% for error in errors %}
+        {{ error }}<br/>
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" disabled value="{{ user.user.username }}" placeholder="Student ID">
+        <input type="text" name="first_name" maxlength="30" required value="{{ user.user.first_name }}" placeholder="First Name">
+        <input type="text" name="last_name" maxlength="30" required value="{{ user.user.last_name }}" placeholder="Last Name">
+        <input type="tel" name="mobile" maxlength="10" minlength="10" value="{{ user.mobile }}" placeholder="Mobile">
+        <input type="email" name="email" required value="{{ user.user.email }}" placeholder="E-Mail">
+        <input type="number" name="front_end" required min="0" max="10" value="{{ skill.front_end }}" placeholder="Frontend development">
+        <input type="number" name="back_end" required min="0" max="10" value="{{ skill.back_end }}" placeholder="Backend development">
+        <input type="number" name="testing" required min="0" max="10" value="{{ skill.testing }}" placeholder="Testing">
+        <input type="number" name="managing" required min="0" max="10" value="{{ skill.managing }}" placeholder="Managing">
+        <input type="number" name="presentation" required min="0" max="10" value="{{ skill.front_end }}" placeholder="Presentation">
+        <input type="submit" name="save" value="Save Changes">
+    </form>
+{% endblock %}

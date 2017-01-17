@@ -9,6 +9,11 @@
         Presentation- {{ skills.presentation }} out of 10.<br/>
     {% endif %}
     {% if not payment %}
-        ** <b>Payment pending.</b> **
+        ** <b>Payment pending.</b> **<br/>
     {%  endif %}
+    {% if team %}
+        Team - <a href="/team/profile/{{ team.name }}">{{ team.name }}</a>
+    {% else %}
+        Not member of any team.
+    {% endif %}
 {% endblock %}

@@ -1,3 +1,5 @@
+import traceback
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.db.transaction import atomic
@@ -9,9 +11,12 @@ from . import utils
 def home(request):
     user = utils.get_login_user(request.COOKIES)
     if user is None:
-        return redirect('/participant/login')
+        response = redirect('/participant/login')
+        if request.COOKIES.get('username', None):  # Unknown user
+            response.set_cookie(key='username', value='', expires=0)
+        return response
     return render(request, 'home.html', context={
-        'title': 'Welcome to Hackathon 2017',
+        'title': 'Hackathon 2017 | Home',
         'user': user,
     })
 
@@ -50,17 +55,16 @@ def register(request):
                         return response
                 except Exception as e:
                     error.append('Unable to create user - {0}'.format(e))
+                    traceback.print_exc()
             else:
                 error.append('Passwords do not match')
         else:
             error.append('Password length should be greater than 8')
         if password != password_repeat:
             error.append('Passwords do not match')
-    else:
-        error.append('Nothing provided')
 
     return render(request, 'register.html', context={
-        'title': 'Register for Hackathon 2017',
+        'title': 'Hackathon 2017 | Register',
         'errors': error,
         'user': None,
     })
@@ -84,7 +88,7 @@ def login(request):
                 return response
         error.append('No such user found')
     return render(request, 'login.html', context={
-        'title': 'Login',
+        'title': 'Hackathon 2017 | Login',
         'user': None,
         'errors': error
     })
@@ -108,5 +112,69 @@ def participant_show(request, username):
         'participant': participant,
         'own_page': own_page,
         'skills': participant.get_skills(),
-        'payment': participant.get_payment_status()
+        'payment': participant.get_payment_status(),
+        'team': participant.get_team(),
+    })
+
+
+def edit_participant(request):
+    user = utils.get_login_user(request.COOKIES)
+    if not user:
+        redirect('/participant')
+    error = []
+    if request.POST.get('save', None):  # User has made some changes
+        try:
+            valid_credentials = True
+            first_name = request.POST.get('first_name')
+            if len(first_name) > 30:
+                valid_credentials = False
+                error.append('First name should be at most 30 characters.')
+            last_name = request.POST.get('last_name')
+            if len(last_name) > 30:
+                valid_credentials = False
+                error.append('Last name should be at most 30 characters.')
+            mobile = request.POST.get('mobile')
+            try:
+                if len(mobile) != 10:
+                    raise ValueError()
+                int(mobile)
+            except ValueError:
+                valid_credentials = False
+                error.append('Invalid mobile number.')
+            email = request.POST.get('email')
+            front_end = request.POST.get('front_end')
+            back_end = request.POST.get('back_end')
+            testing = request.POST.get('testing')
+            managing = request.POST.get('managing')
+            presentation = request.POST.get('presentation')
+            valid_skills = utils.verify_skills([front_end, back_end, testing,
+                                                     managing, presentation])
+            if not valid_skills:
+                error.append('Invalid points for one or more skills.')
+                valid_credentials = False
+            if valid_credentials:
+                with atomic():
+                    user.user.first_name = first_name
+                    user.user.last_name = last_name
+                    user.mobile = mobile
+                    user.user.email = email
+                    user.user.save()
+                    user.save()
+                    skill = user.get_skills()
+                    skill.front_end = int(front_end)
+                    skill.back_end = int(back_end)
+                    skill.testing = int(testing)
+                    skill.managing = int(managing)
+                    skill.presentation = int(presentation)
+                    skill.save()
+                return redirect('/participant/profile/edit')
+        except Exception:
+            error.append('Unknown problem occurred')
+            traceback.print_exc()
+    skill = user.get_skills()
+    return render(request, 'edit_participant.html', context={
+        'title': 'Hackathon 2017 | Participant | Edit Profile',
+        'user': user,
+        'skill': skill,
+        'errors': error,
     })
