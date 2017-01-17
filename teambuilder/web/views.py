@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -99,12 +100,15 @@ def register_team(request):
 	if user:
 		if request.POST.get('register', None):
 			team_name = request.POST.get('name')
+			# spaces are replaced by '-' due to security reasons
+			team_name = team_name.replace(' ', '-', 32)
 			description = request.POST.get('description')
 			created_by = user
 			created_time = timezone.now()
 			try:
 				with atomic():
-					team = models.Team.objects.create(name=team_name, created_by=created_by, create_time=created_time, description=description)
+					team = models.Team.objects.create(name=team_name, created_by=created_by, create_time=created_time,
+													  description=description)
 					team.save()
 					return HttpResponseRedirect('/')
 			except Exception as e:
@@ -117,4 +121,27 @@ def register_team(request):
 			'title': 'register your team',
 			'errors': error,
 			'user': None,
+		})
+
+
+def teams(request):
+	team = models.Team.objects.all()
+	return render(
+		request, 'teams.html', context={
+			'title': 'Teams',
+			'teams': team,
+		})
+
+
+def team_profile(request, team_name):
+	try:
+		team = models.Team.objects.get(name=team_name)
+	except ObjectDoesNotExist:
+		print("No team found with this name")
+		return HttpResponse('404 not found')
+	members = models.TeamMember.objects.filter(team=team)
+	return render(
+		request, 'team_profile.html', context={
+			'team': team,
+			'members': members
 		})

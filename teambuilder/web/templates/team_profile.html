@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block main %}
+    {% for error in errors %}
+        {{ error }}<br/>
+    {% endfor %}
+    <p>
+    {{ team.name }}
+    </p>
+    <p>
+    {{ team.create_time }}
+    </p>
+    <p>
+    {{ team.created_by.user.username }}
+    </p>
+    <p>
+    {{ team.description }}
+    </p>
+    <br>
+    <table>
+        {% for member in members %}
+            <tr>
+                <td>{{ member.member.user.username }}</td>
+                <td>{{ member.add_time }}</td>
+                <td>{{ member.added_by.user.username }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+{% endblock %}

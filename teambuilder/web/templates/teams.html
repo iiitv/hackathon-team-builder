@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block main %}
+    {% for error in errors %}
+        {{ error }}<br/>
+    {% endfor %}
+    {% if teams %}
+        <table>
+            {% for team in teams %}
+                <tr>
+                    <td>
+                        <a href="{% url 'team-profile' team.name %}">{{ team.name }}</a>
+                    </td>
+                    <td>{{ team.create_time }}</td>
+                    <td>{{ team.created_by.user.username }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+{% endblock %}
