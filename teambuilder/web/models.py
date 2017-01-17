@@ -19,6 +19,12 @@ class Participant(models.Model):
     def get_payment_status(self):
         return Payment.objects.get(user=self).status
 
+    def get_team(self):
+        team = TeamMember.objects.filter(member=self)
+        if len(team) == 0:
+            return None
+        return team[0].team
+
 
 class Skill(models.Model):
 
