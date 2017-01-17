@@ -15,8 +15,9 @@ class Skill(models.Model):
     student = models.ForeignKey(Participant)
     front_end = models.PositiveIntegerField(default=0, null=False)
     back_end = models.PositiveIntegerField(default=0, null=False)
+    tester = models.PositiveIntegerField(default=0, null=False)
     managing = models.PositiveIntegerField(default=0, null=False)
-    marketing = models.PositiveIntegerField(default=0, null=False)
+    presenter = models.PositiveIntegerField(default=0, null=False)
     # TODO: Verify
 
 
@@ -25,6 +26,7 @@ class Team(models.Model):
     name = models.CharField(primary_key=True, max_length=64)
     create_time = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(Participant)
+    description = models.CharField(max_length=200, related_name='description')
 
 
 class TeamMember(models.Model):
