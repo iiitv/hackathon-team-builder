@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block main %}
+    Welcome to {% if own_page %} your {% else %} {{ participant.user.first_name }}'s {% endif %} profile.<br/>
+    {% if skills %}
+        Front End - {{ skills.front_end }} out of 10.<br/>
+        Back End - {{ skills.back_end }} out of 10.<br/>
+        Testing - {{ skills.testing }} out of 10.<br/>
+        Managing - {{ skills.managing }} out of 10.<br/>
+        Presentation- {{ skills.presentation }} out of 10.<br/>
+    {% endif %}
+    {% if not payment %}
+        ** <b>Payment pending.</b> **
+    {%  endif %}
+{% endblock %}

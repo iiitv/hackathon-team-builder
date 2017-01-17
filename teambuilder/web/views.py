@@ -88,3 +88,25 @@ def login(request):
         'user': None,
         'errors': error
     })
+
+
+def participant_show(request, username):
+    user = utils.get_login_user(request.COOKIES)
+    participant = models.Participant.objects.filter(user__username=username)
+    if len(participant) == 0:
+        return render(request, '404.html', context={
+            'title': 'The participant you are looking for was not found.',
+            'user': user,
+            'message': 'No participant found for ID {0}'.format(username),
+        }, status=404)
+    participant = participant[0]
+    own_page = participant == user
+    return render(request, 'participant_show.html', context={
+        'title': 'Hackathon 2017 | Participant | {0} {1}'.format(
+            participant.user.first_name, participant.user.last_name),
+        'user': user,
+        'participant': participant,
+        'own_page': own_page,
+        'skills': participant.get_skills(),
+        'payment': participant.get_payment_status()
+    })
