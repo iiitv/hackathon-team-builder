@@ -9,6 +9,9 @@ class Participant(models.Model):
                                 on_delete=models.CASCADE)
     mobile = models.CharField(max_length=10, unique=True)
 
+    def get_full_name(self):
+        return self.user.first_name+self.user.last_name
+
 
 class Skill(models.Model):
 

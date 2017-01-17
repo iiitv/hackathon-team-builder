@@ -145,3 +145,11 @@ def team_profile(request, team_name):
 			'team': team,
 			'members': members
 		})
+
+
+def participant(request):
+	participants = models.Participant.objects.all()
+	return render(
+		request, 'participant.html', context={
+			'participants':participants
+		})

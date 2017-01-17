@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block main %}
+    {% for error in errors %}
+        {{ error }}<br/>
+    {% endfor %}
+    {% if participants %}
+        <table>
+            {% for participant in participants %}
+                <tr>
+                    <td>
+                        {{ participant.get_full_name }}
+                    </td>
+                    <td>{{ participant.user.username }}</td>
+                    <td>{{ participant.mobile }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+{% endblock %}
