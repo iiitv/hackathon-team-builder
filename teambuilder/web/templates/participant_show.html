@@ -16,4 +16,7 @@
     {% else %}
         Not member of any team.
     {% endif %}
+    {% if own_page %}
+        <a href="/participant/profile/edit">Edit Profile</a>
+    {% endif %}
 {% endblock %}
