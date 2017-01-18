@@ -5,4 +5,8 @@
     {% else %}
         <a href="/participant/login">Login</a> | <a href="/participant/register">Register</a>
     {% endif %}
+    <br/>
+    {% for announcement in announcements %}
+        {{ announcement.announcement }}<br/>
+    {% endfor %}
 {% endblock %}

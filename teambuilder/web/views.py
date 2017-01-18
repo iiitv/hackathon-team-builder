@@ -11,13 +11,15 @@ from . import utils
 def home(request):
     user = utils.get_login_user(request.COOKIES)
     if user is None:
-        response = redirect('/participant/login')
         if request.COOKIES.get('username', None):  # Unknown user
+            response = redirect('/participant/login')
             response.set_cookie(key='username', value='', expires=0)
-        return response
+            return response
+    announcements = models.Announcement.objects.order_by('-create_time')[:5]
     return render(request, 'home.html', context={
         'title': 'Hackathon 2017 | Home',
         'user': user,
+        'announcements': announcements,
     })
 
 
