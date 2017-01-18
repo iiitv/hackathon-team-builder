@@ -44,6 +44,10 @@ class Team(models.Model):
     created_by = models.ForeignKey(Participant)
     description = models.CharField(max_length=200, blank=True)
 
+    @staticmethod
+    def team_count():
+        return Team.objects.count()
+
 
 class TeamMember(models.Model):
 
