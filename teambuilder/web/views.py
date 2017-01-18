@@ -66,6 +66,10 @@ def register(request):
     })
 
 
+def team_count():
+    return models.Team.object.all().count()
+
+
 def login(request):
     # TODO: Add better checks
     user = utils.get_login_user(request.COOKIES)
