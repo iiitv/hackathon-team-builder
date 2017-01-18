@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block main %}
+    <h1>Latest announcements</h1>
+    {% for announcement in announcements %}
+        <h2>{{ announcement.announcement }}</h2> created at {{ announcement.create_time }}<br/>
+    {% endfor %}
+{% endblock %}

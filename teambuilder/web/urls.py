@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'participant/profile/edit/?', views.edit_participant),
     url(r'^participant/profile/(?P<username>[0-9]{9})/?$',
         views.participant_show),
+    url(r'^announcements/?$', views.announcements)
 ]

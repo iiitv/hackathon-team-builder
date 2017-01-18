@@ -180,3 +180,14 @@ def edit_participant(request):
         'skill': skill,
         'errors': error,
     })
+
+
+def announcements(request):
+    user = utils.get_login_user(request.COOKIES)
+    announcement = models.Announcement.objects.order_by('-create_time')
+    print(announcement)
+    return render(request, 'announcements.html', context={
+        'title': 'Hackathon 2017 | Announcements',
+        'announcements': announcement,
+        'user': user,
+    })
