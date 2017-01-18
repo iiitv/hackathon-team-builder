@@ -21,3 +21,17 @@ def create_payment(sender, instance=None, created=False, **kwargs):
         # i.e., he has not made the payment yet
         payment_model = models.Payment(user=instance)
         payment_model.save()
+        # Auto create skill instance for the user
+        skill = models.Skill(participant=instance)
+        skill.save()
+
+
+def verify_skills(skills):
+    try:
+        for skill in skills:
+            x = int(skill)
+            if x < 0 or x > 10:
+                return False
+    except ValueError:
+        return False
+    return True
