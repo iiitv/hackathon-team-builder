@@ -45,7 +45,7 @@ class Team(models.Model):
     description = models.CharField(max_length=200, blank=True)
 
     @staticmethod
-    def team_count():
+    def count():
         return Team.objects.count()
 
 
