@@ -64,3 +64,9 @@ class Payment(models.Model):
 
     user = models.ForeignKey(Participant)
     status = models.BooleanField(default=False)
+
+
+class Announcement(models.Model):
+
+    announcement = models.TextField(max_length=500)
+    create_time = models.DateTimeField(default=timezone.now)
