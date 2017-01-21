@@ -13,5 +13,5 @@ A platform for building better hackathon teams.
   * Sort on overall score
   * Sort on specefic fields
 * Viewing of participating members with appropriate sort and search methods
-  * Sort on specefic field
+  * Sort on specific field
   * Find person by ID
