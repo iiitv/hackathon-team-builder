@@ -1,6 +1,8 @@
 # Hackathon Team Builder
 A platform for building better hackathon teams.
 
+**Note**: This project is discontinued as of now. Anyone willing to work on this can contribute. Ping [@singhpratyush](https://github.com/singhpratyush) for queries.
+
 ## Main Features
 * Registration for participants
   * Entering basic details
